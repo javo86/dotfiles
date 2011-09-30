@@ -14,7 +14,7 @@ Preparar audio
 	agregar @alsa a daemons en /etc/rc.conf
 
 Adding User:
-	adduser > seguir script y agregar los siguientes grupos: 
+	adduser > seguir script y agregar los siguientes grupos:
 		audio,lp,optical,storage,video,wheel,games,power,scanner
 visudo:
 	Permitir miembros de grupo wheel utilizar cualquier comando
@@ -37,10 +37,10 @@ agregar el repo dotfiles_hp y common
 	Set github account token
 		Copiar el token de https://github.com/account/admin
 		git config --global github.user user
-		git config --global github.token token 
+		git config --global github.token token
 
 	Clonar los siguientes repos
-		cd conf.d 
+		cd conf.d
 		Correr bootstrap.sh
 
 
@@ -49,13 +49,21 @@ iniciar x (startx) como $USER (javo de seguro)
 instalar los packages de abajo
 
 packages:
-	pacman:
-		dell:
-			sudo pacman -S cairo-compmgr conky tint2 colordiff dmenu tmux mutt newsbeuter mpd ncmpcpp acpid lm_sensors feh imagemagick weechat laptop-mode-tools lxappearance obconf ttf-inconsolata bash-completion  inkscape pm-utils lesspipe unzip unrar apvlv ranger ctags ifplugd zathura 
-	
+pacman:
+    dell:
+        sudo pacman -S cairo-compmgr conky tint2 colordiff
+        dmenu tmux mutt newsbeuter mpd ncmpcpp acpid lm_sensors
+        feh imagemagick weechat laptop-mode-tools lxappearance
+        obconf ttf-inconsolata bash-completion  inkscape
+        pm-utils lesspipe unzip unrar apvlv ranger ctags
+        ifplugd zathura scrot xscreensaver
+
 Se agregan los siguientes daemons al /etc/rc.conf
 	Daemons:
-		hwclock @syslog-ng @alsa @laptop-mode net-auto-wired net-auto-wireless laptop-mode @dbus @acpid !network @netfs @crond
+		hwclock @syslog-ng @alsa @laptop-mode net-auto-wired
+                net-auto-wireless laptop-mode @dbus @acpid !network @netfs
+                @crond
+
 	Se inicia manualmente los siguientes daemons:
 		sudo /etc/rc.d/acpid start
 		sudo /etc/rc.d/laptop-mode start
@@ -75,28 +83,13 @@ Instalar los siguientes packages con yaourt
 		pacman-color
 		mingetty
 		archey
-		broadcom-wl
 
 Preparar Wireless:
-	https://wiki.archlinux.org/index.php/Broadcom_wireless
-	Agregar el modulo wl en rc.conf
-	blackist b43 y ssb, en caso de que se loaden
-		sudo touch /etc/modprobe.d/broadcom-wl.conf
-			blacklist b43
-			blacklist ssb
-	Crear una regla de udev para que no se intercambien las interfaces en cada reboot
-	sudo touch /etc/udev/rules.d/10-network.rules
-		SUBSYSTEM=="net", ATTR{address}=="aa:bb:cc:dd:ee:ff", NAME="eth0"
-		SUBSYSTEM=="net", ATTR{address}=="ff:ee:dd:cc:bb:aa", NAME="eth1"
-	Agregar los daemons net-auto-wireless y net-auto-wired a la lista de daemons en rc.conf
-	también especificar el WIRELESS_INTERFACE="eth0"(por ejemplo) y WIRED_INTERFACE="eth1"
-	Y agregar los profiles necesarios en /etc/network.d/nombre_profile
-	Se puede basar en los ejemplos de /etc/networ.d/examples
-	Para evitar problemas de que no se reconecte al profile después de un resume, se debe
-	de agregar un hook de /usr/lib/pm-utils/sleep.d/11netcfg a /etc/pm/sleep.d/11netcfg
-		
+    Arch reconoce la tarjeta por defecto
+
 Login at boot:
-	para poder iniciar automaticamente x, se necesitar seguir estas instrucciones
+	para poder iniciar automaticamente x, se necesitar seguir estas
+        instrucciones
 	https://wiki.archlinux.org/index.php/Automatic_login_to_virtual_console
 	https://wiki.archlinux.org/index.php/Start_X_at_Boot#.7E.2F.bash_profile
 	Se necesita de mingetty (ya se instalo, con ayuda de yaourt)
@@ -115,16 +108,19 @@ Suspender laptop cuando se cierre el lid
 	Se ocupan diferentes packages para lograrlo facilmente:
 		acpid
 		pm-utils
-	
-	Una vez que se haya instalado pm-utils, se crean unos hooks en /etc/acpi/events/lm_lid
-	y en las acciones /etc/acpi/actions/lm_lid.sh, en este bash script es donde se puede agregar
-	/usr/sbin/pm-suspend, para que la laptop se suspenda cada vez que se cierre el lid
+
+	Una vez que se haya instalado pm-utils, se crean unos hooks en
+        /etc/acpi/events/lm_lid y en las acciones /etc/acpi/actions/lm_lid.sh,
+        en este bash script es donde se puede agregar a/usr/sbin/pm-suspend,
+        para que la laptop se suspenda cada vez que se cierre el lid
+
 
 Auto mount usbs
 	https://wiki.archlinux.org/index.php/Udev
-	Con la ayuda de una regla de udev se puede auto mountear los usbs en /media, con su respectiva
-	label si es que la tiene (si no utiliza shdb#). 
-	Se tiene que crear una regla en /etc/udev/rules.d/ por ejemplo 
+	Con la ayuda de una regla de udev se puede auto mountear los usbs en
+        /media, con su respectiva label si es que la tiene (si no utiliza
+        shdb#).
+	Se tiene que crear una regla en /etc/udev/rules.d/ por ejemplo
 	sudo touch /etc/udev/rules.d/11-media-by-label-auto-mount.rules
 
 	KERNEL!="sd[a-z][0-9]", GOTO="media_by_label_auto_mount_end"
@@ -156,7 +152,7 @@ Poder reboot or shutdown sin tener que escribir password
 	Para poder utilizar esos comandos sin tener que escribir el password, se debe modificar el archivo
 	sudoers con lo siguiente (se agrega al final):
 		sudo visudo
-			USER ALL=NOPASSWD: /sbin/shutdown	
+			USER ALL=NOPASSWD: /sbin/shutdown
 
 Configurar:
 
@@ -174,7 +170,7 @@ newsbeuter:
 
 tmux:
 	Este repo ya incluye la configuración de tmux en tmux.conf, falta agregar la script
-	para iniciar con el layout que me gusta 
+	para iniciar con el layout que me gusta
 
 weechat & bitlbee:
 	Este repo ya incluye las configuraciones de los servidores y channels que me gustan
